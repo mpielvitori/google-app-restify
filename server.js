@@ -18,6 +18,16 @@ var restify = require('restify');
 var nodemailer = require('nodemailer');
 var directTransport = require('nodemailer-direct-transport');
 var transporter = nodemailer.createTransport(directTransport({name:"cdt.com.ar",debug:false}));
+/*var gmailTransport = nodemailer.createTransport('SMTP', {
+ service: 'Gmail',
+ auth: {
+   user: 'martin.pielvitori@gmail.com',
+   pass: 'tinchocdt00'
+ }
+});*/
+var emailTemplates = require('email-templates');
+var path = require('path');
+var templatesDir = path.resolve(__dirname, '..', 'templates');
 
 var server = restify.createServer({
   name: 'appengine-restify',
@@ -36,7 +46,7 @@ server.get('/echo/:name', function (req, res, next) {
 
 // [START index]
 server.get('/', function (req, res) {
-  res.send('Hello World! Restify.js on Google App Enginesasas.');
+  res.send('Envio de mail con detalle de consumos OSDE');
 });
 // [END index]
 
@@ -49,12 +59,78 @@ server.listen(process.env.PORT || 8080, function () {
 
 server.get('/send/:email', function (req, res, next) {
   console.log('sending mail to '+req.params.email);
-  sendMail(req, res);
-  res.send('Se envio un email a '+req.params.email);
-  return next();
+  sendMail(req, res, 
+  	function (successCallback, error) {
+	    if (error) {
+	        res.send('Error al enviar email '+error);
+	    }
+	    else {
+			res.send('Se envio un email a '+req.params.email);
+	    }
+		return next();
+	}
+  ); 
 });
 
-function sendMail(req, res) {
+server.get('/response/:email/:id', function (req, res, next) {
+  console.log('mail response to '+req.params.email+' id: '+req.params.id);
+  sendMail(req, res, 
+  	function (successCallback, error) {
+	    if (error) {
+	        res.send('Error al enviar email con observaciones '+error);
+	    }
+	    else {
+			res.send('Las observaciones fueron enviadas a '+req.params.email);
+	    }
+		return next();
+	}
+  );    
+});
+
+function sendMail(req, res, callback){
+	emailTemplates(templatesDir, function(err, template) {
+
+	  if (err) {
+        console.log('Error.1 '+err);
+        callback(null, 'Error.1 ('+err+')');
+	  } else {
+
+		var locals = {
+	      email: req.params.email,
+	      from: 'CDT <martin.pielvitori@cdt.com.ar>',
+	      subject: 'Detalles de consumo - OSDE(test)',
+	      url: 'http://localhost:8080'
+	    };
+
+	    // Send a single email
+	    template('newsletter', locals, function(err, html, text) {
+	      if (err) {
+	        console.log('Error.2 '+err);
+	        callback(null, 'Error.2 ('+err+')');
+	      } else {
+	        transporter.sendMail({
+	          from: locals.from,
+	          to: locals.email,
+	          subject: locals.subject,
+	          html: html,
+	          text: text
+	        }, function(err, responseStatus) {
+	          if (err) {
+		        console.log('Error.3 '+err);
+		        callback(null, 'Error.3 ('+err+')');
+	          } else {
+		        console.log('Envío correcto');
+		        callback('Ok');	          	
+	          }
+	        });
+	      }
+	    });
+	  }
+
+	});
+};
+
+function sendSimpleMail(req, res) {
 	//Sending mail
 	transporter.sendMail({
 	  from: 'martin.pielvitori@cdt.com.ar',
@@ -64,8 +140,13 @@ function sendMail(req, res) {
 	  html: 'Nombre y apellido: <b>'+'Martin Pielvitori'+'</b><br>'
 	}, function(error, response){
 		if (error){
-			console.error('Error al enviar mail '+error);
+			console.error('Error al enviar email '+error);
+			res.send('Error al enviar email '+error);
 		}
-		console.log('Success');
+		else {
+			console.log('Success');
+			res.send('Se envio un email a '+req.params.email);
+		}
+  		return next();
 	});
 };
