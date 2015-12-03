@@ -16,6 +16,6 @@
     "nodemailer": "^1.10.0",
     "nodemailer-direct-transport": "^1.1.0",
     "email-templates": "2.0.1",
-    "ejs":"2.0.0"
+    "ejs":"2.3.4"
   }
 }

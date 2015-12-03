@@ -27,7 +27,7 @@ var transporter = nodemailer.createTransport(directTransport({name:"cdt.com.ar",
 });*/
 var emailTemplates = require('email-templates');
 var path = require('path');
-var templatesDir = path.resolve(__dirname, '..', 'templates');
+var templatesDir = path.resolve(__dirname, '.', 'templates');
 
 var server = restify.createServer({
   name: 'appengine-restify',
@@ -57,8 +57,9 @@ server.listen(process.env.PORT || 8080, function () {
 // [END server_start]
 
 
-server.get('/send/:email', function (req, res, next) {
-  console.log('sending mail to '+req.params.email);
+server.get('/send/:email/:socio', function (req, res, next) {
+  console.log('sending mail to '+req.params.email+' socio '+req.params.socio);
+  //sendSimpleMail(req, res);
   sendMail(req, res, 
   	function (successCallback, error) {
 	    if (error) {
@@ -69,7 +70,22 @@ server.get('/send/:email', function (req, res, next) {
 	    }
 		return next();
 	}
-  ); 
+  );
+});
+
+server.post('/observaciones', function (req, res) {
+  console.log('sending response to '+req.params.email+' socio '+req.params.socio);
+  sendMail(req, res, 
+  	function (successCallback, error) {
+	    if (error) {
+	        res.send('Error al enviar email '+error);
+	    }
+	    else {
+			res.send('Las observaciones fueron enviadas a '+req.params.email);
+	    }
+		return next();
+	}
+  );
 });
 
 server.get('/response/:email/:id', function (req, res, next) {
@@ -80,7 +96,7 @@ server.get('/response/:email/:id', function (req, res, next) {
 	        res.send('Error al enviar email con observaciones '+error);
 	    }
 	    else {
-			res.send('Las observaciones fueron enviadas a '+req.params.email);
+			res.send('Hemos registrado su denuncia. Muchas gracias');
 	    }
 		return next();
 	}
@@ -99,7 +115,8 @@ function sendMail(req, res, callback){
 	      email: req.params.email,
 	      from: 'CDT <martin.pielvitori@cdt.com.ar>',
 	      subject: 'Detalles de consumo - OSDE(test)',
-	      url: 'http://localhost:8080'
+	      url: 'http://localhost:8080',
+	      socio: req.params.socio
 	    };
 
 	    // Send a single email
@@ -112,6 +129,7 @@ function sendMail(req, res, callback){
 	          from: locals.from,
 	          to: locals.email,
 	          subject: locals.subject,
+	          generateTextFromHTML: true,
 	          html: html,
 	          text: text
 	        }, function(err, responseStatus) {
@@ -137,7 +155,7 @@ function sendSimpleMail(req, res) {
 	  to: 'martinpielvitori@gmail.com',
 	  subject: 'Detalles de consumo - OSDE',
 	  generateTextFromHTML: true,
-	  html: 'Nombre y apellido: <b>'+'Martin Pielvitori'+'</b><br>'
+	  html: '<style>body {font-family: Arial,Helvetica,sans-serif;font-size: 22px;margin-top: 0px;min-height: 100%;background: #000;}</style>Nombre y apellido: <b>Martin Pielvitori</b><br>'
 	}, function(error, response){
 		if (error){
 			console.error('Error al enviar email '+error);
