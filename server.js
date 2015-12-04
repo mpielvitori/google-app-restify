@@ -103,6 +103,21 @@ server.get('/response/:email/:id', function (req, res, next) {
   );    
 });
 
+server.get('/observaciones/:socio/:motivo/:observaciones/:email', function (req, res, next) {
+  console.log('Ejecuta servicio por GET Observaciones: '+req.params.observaciones+' motivo: '+req.params.motivo);
+  /*sendMail(req, res, 
+  	function (successCallback, error) {
+	    if (error) {
+	        res.send('Error al enviar email con observaciones '+error);
+	    }
+	    else {
+			res.send('Hemos registrado su denuncia. Muchas gracias');
+	    }
+		return next();
+	}
+  );*/    
+});
+
 function sendMail(req, res, callback){
 	emailTemplates(templatesDir, function(err, template) {
 
@@ -116,7 +131,9 @@ function sendMail(req, res, callback){
 	      from: 'CDT <martin.pielvitori@cdt.com.ar>',
 	      subject: 'Detalles de consumo - OSDE(test)',
 	      url: 'http://localhost:8080',
-	      socio: req.params.socio
+	      socio: req.params.socio,
+	      gform: 'https://docs.google.com/forms/d/1uj1wZI-X9ZyMs4Zoelw9QVS8ACezeu1q6fCIEyLNvHo/formResponse',
+	      gformlink: 'https://docs.google.com/forms/d/1uj1wZI-X9ZyMs4Zoelw9QVS8ACezeu1q6fCIEyLNvHo/viewform'
 	    };
 
 	    // Send a single email
