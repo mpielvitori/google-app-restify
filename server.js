@@ -22,7 +22,7 @@ var transporter = nodemailer.createTransport(directTransport({name:"cdt.com.ar",
  service: 'Gmail',
  auth: {
    user: 'martin.pielvitori@gmail.com',
-   pass: 'tinchocdt00'
+   pass: 'pass'
  }
 });*/
 var emailTemplates = require('email-templates');
@@ -59,20 +59,20 @@ server.listen(process.env.PORT || 8080, function () {
 
 server.get('/send/:email/:socio', function (req, res, next) {
   console.log('sending mail to '+req.params.email+' socio '+req.params.socio);
-  //sendSimpleMail(req, res);
   sendMail(req, res, 
   	function (successCallback, error) {
 	    if (error) {
-	        res.send('Error al enviar email '+error);
+	        res.send('Error al enviar email de consumos '+error);
 	    }
 	    else {
-			res.send('Se envio un email a '+req.params.email);
+			res.send('Se envio un email con Consumos a '+req.params.email+' (App OSDE)');
 	    }
 		return next();
 	}
   );
 });
 
+/* Cambiar llamada desde gform para que ejecute por post en vez de ir por get
 server.post('/observaciones', function (req, res) {
   console.log('sending response to '+req.params.email+' socio '+req.params.socio);
   sendMail(req, res, 
@@ -86,36 +86,21 @@ server.post('/observaciones', function (req, res) {
 		return next();
 	}
   );
-});
+});*/
 
-server.get('/response/:email/:id', function (req, res, next) {
-  console.log('mail response to '+req.params.email+' id: '+req.params.id);
-  sendMail(req, res, 
+server.get('/observaciones/:socio/:motivo/:observaciones/:email/:consumo', function (req, res, next) {
+  console.log('Ejecuta servicio por GET -> Motivo: '+req.params.motivo);
+  sendMailResponse(req, res, 
   	function (successCallback, error) {
 	    if (error) {
-	        res.send('Error al enviar email con observaciones '+error);
+	        res.send('Error al enviar email con respuesta de google form '+error);
 	    }
 	    else {
-			res.send('Hemos registrado su denuncia. Muchas gracias');
+			res.send('Hemos registrado su descargo. Muchas gracias(App OSDE)');
 	    }
 		return next();
 	}
-  );    
-});
-
-server.get('/observaciones/:socio/:motivo/:observaciones/:email', function (req, res, next) {
-  console.log('Ejecuta servicio por GET Observaciones: '+req.params.observaciones+' motivo: '+req.params.motivo);
-  /*sendMail(req, res, 
-  	function (successCallback, error) {
-	    if (error) {
-	        res.send('Error al enviar email con observaciones '+error);
-	    }
-	    else {
-			res.send('Hemos registrado su denuncia. Muchas gracias');
-	    }
-		return next();
-	}
-  );*/    
+  );
 });
 
 function sendMail(req, res, callback){
@@ -165,23 +150,52 @@ function sendMail(req, res, callback){
 	});
 };
 
-function sendSimpleMail(req, res) {
+function sendMailResponse(req, res, callback) {
+	//'/observaciones/:socio/:motivo/:observaciones/:email/:consumo'
 	//Sending mail
-	transporter.sendMail({
-	  from: 'martin.pielvitori@cdt.com.ar',
-	  to: 'martinpielvitori@gmail.com',
-	  subject: 'Detalles de consumo - OSDE',
-	  generateTextFromHTML: true,
-	  html: '<style>body {font-family: Arial,Helvetica,sans-serif;font-size: 22px;margin-top: 0px;min-height: 100%;background: #000;}</style>Nombre y apellido: <b>Martin Pielvitori</b><br>'
-	}, function(error, response){
-		if (error){
-			console.error('Error al enviar email '+error);
-			res.send('Error al enviar email '+error);
-		}
-		else {
-			console.log('Success');
-			res.send('Se envio un email a '+req.params.email);
-		}
-  		return next();
+	emailTemplates(templatesDir, function(err, template) {
+
+	  if (err) {
+        console.log('Error.4 '+err);
+        callback(null, 'Error.4 ('+err+')');
+	  } else {
+
+		var locals = {
+	      email: req.params.email,
+	      from: 'CDT <martin.pielvitori@cdt.com.ar>',
+	      subject: 'Registro de descargo - OSDE(test)',
+	      socio: req.params.socio,
+	      motivo: req.params.motivo,
+	      consumo: req.params.consumo,
+	      observaciones: req.params.observaciones
+	    };
+
+	    // Send a single email
+	    template('response', locals, function(err, html, text) {
+	      if (err) {
+	        console.log('Error.5 '+err);
+	        callback(null, 'Error.5 ('+err+')');
+	      } else {
+	        transporter.sendMail({
+	          from: locals.from,
+	          to: locals.email,
+	          subject: locals.subject,
+	          generateTextFromHTML: true,
+	          html: html,
+	          text: text
+	        }, function(err, responseStatus) {
+	          if (err) {
+		        console.log('Error.6 '+err);
+		        callback(null, 'Error.6 ('+err+')');
+	          } else {
+		        console.log('Envío respuestas correcto');
+		        callback('Respuesta Ok');	          	
+	          }
+	        });
+	      }
+	    });
+	  }
+
 	});
+
 };

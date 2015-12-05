@@ -1,7 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html style="font-family: sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-size: 10px; -webkit-tap-highlight-color: rgba(0,0,0,0);">
 <head>
-
+  <style>
+    table, th, td {
+        border-bottom: 1px solid black;
+        border-collapse: collapse;
+        font-family: Arial,Helvetica,sans-serif; 
+        font-size: 12px;
+    }
+    th, td {
+        padding: 5px;
+    }
+    th {
+        text-align: left;
+    }
+  </style>
 </head>
 <body style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.42857143; background-color: #fff; margin: 0;" bgcolor="#fff">
 
@@ -15,23 +28,8 @@
           </a>
         </h4>
       </div>
-
       <div id="collapseOne" class="panel-collapse collapse in" style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; display: block;">
-        <div class="panel-body" style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border-top-color: #ddd; padding: 15px;">
-          <style>
-            table, th, td {
-                border-bottom: 1px solid black;
-                border-collapse: collapse;
-                font-family: Arial,Helvetica,sans-serif; 
-                font-size: 12px;
-            }
-            th, td {
-                padding: 5px;
-            }
-            th {
-                text-align: left;
-            }
-          </style>
+        <div class="panel-body" style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border-top-color: #ddd; padding: 3px;">
           <table style="width:100%;">
             <tr>
               <th>FECHA</th>
@@ -43,7 +41,7 @@
             </tr>
             <tr>
               <td>12/08/2015</td>
-              <td>LOPEZ DIEGO (60940877401)</td>    
+              <td>LOPEZ MARTIN (60940877401)</td>    
               <td>DOMICILIO</td>
               <td></td>
               <td></td>
@@ -52,17 +50,76 @@
                   <input type="hidden" name="entry.70882562" value="<%=locals.socio%>">
                   <input type="hidden" name="entry.485680763" value="<%=locals.email%>">
                   <input type="hidden" name="entry.1849237969" value="<%=locals.url%>">                  
+                  <input type="hidden" name="entry.1070032382" value="12.08.2015 - LOPEZ MARTIN (60940877401)">
                   <input style="margin-bottom:-8px" type="image" name="submit" src="http://waspsda.org/wp-content/plugins/wimvideopro/images/glyphicons/glyphicons_078_warning_sign.png" alt="Descargo" width="20" height="20">
                 </form>                
               </td>
             </tr>
           </table>
         </div>
-        <span style="padding:5px;">Realizar descargo presionando en la imagen o directamente desde <a href="<%=gformlink%>?entry.1849237969=<%=locals.url%>&entry.70882562=<%=locals.socio%>&entry.485680763=<%=locals.email%>" target="_blank">Google Forms</a>
+
+        <div class="panel-body" style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border-top-color: #ddd; padding: 3px;">
+
+          <table style="width:100%;">
+            <tr>
+              <th>FECHA</th>
+              <th>PRESTADOR</th>   
+              <th>TIPO</th>
+              <th>DESCRIPCION</th>
+              <th>DETALLE</th>   
+              <th></th>
+            </tr>
+            <tr>
+              <td>18/08/2015</td>
+              <td>PEREZ ROMINA (60940824678)</td>    
+              <td>DOMICILIO</td>
+              <td></td>
+              <td></td>
+              <td>
+                <form action="<%=locals.gform%>" method="POST">
+                  <input type="hidden" name="entry.70882562" value="<%=locals.socio%>">
+                  <input type="hidden" name="entry.485680763" value="<%=locals.email%>">
+                  <input type="hidden" name="entry.1849237969" value="<%=locals.url%>">                  
+                  <input type="hidden" name="entry.1070032382" value="18.08.2015 - PEREZ ROMINA (60940824678)">
+                  <input style="margin-bottom:-8px" type="image" name="submit" src="http://waspsda.org/wp-content/plugins/wimvideopro/images/glyphicons/glyphicons_078_warning_sign.png" alt="Descargo" width="20" height="20">
+                </form>                
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="panel-body" style="color: #000 !important; text-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border-top-color: #ddd; padding: 3px;">
+
+          <table style="width:100%;">
+            <tr>
+              <th>FECHA</th>
+              <th>PRESTADOR</th>   
+              <th>TIPO</th>
+              <th>DESCRIPCION</th>
+              <th>DETALLE</th>   
+              <th></th>
+            </tr>
+            <tr>
+              <td>26/08/2015</td>
+              <td>RAMIREZ RAUL (60945674577)</td>    
+              <td>DOMICILIO</td>
+              <td></td>
+              <td></td>
+              <td>
+                <form action="<%=locals.gform%>" method="POST">
+                  <input type="hidden" name="entry.70882562" value="<%=locals.socio%>">
+                  <input type="hidden" name="entry.485680763" value="<%=locals.email%>">
+                  <input type="hidden" name="entry.1849237969" value="<%=locals.url%>">                  
+                  <input type="hidden" name="entry.1070032382" value="26.08.2015 - RAMIREZ RAUL (60945674577)">
+                  <input style="margin-bottom:-8px" type="image" name="submit" src="http://waspsda.org/wp-content/plugins/wimvideopro/images/glyphicons/glyphicons_078_warning_sign.png" alt="Descargo" width="20" height="20">
+                </form>                
+              </td>
+            </tr>
+          </table>
+        </div>                
+        <span style="padding:5px;">Realizar descargo presionando sobre la imagen de cada consumo o directamente desde <a href="<%=gformlink%>?entry.1849237969=<%=locals.url%>&entry.70882562=<%=locals.socio%>&entry.485680763=<%=locals.email%>" target="_blank">Google Forms</a>
         </span>
       </div>
-
-
     </div> 
   
 </div> <!-- end container -->
