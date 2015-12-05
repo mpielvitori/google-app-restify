@@ -21,7 +21,7 @@ var transporter = nodemailer.createTransport(directTransport({name:"cdt.com.ar",
 /*var gmailTransport = nodemailer.createTransport('SMTP', {
  service: 'Gmail',
  auth: {
-   user: 'martin.pielvitori@gmail.com',
+   user: 'barbucha@gmail.com',
    pass: 'pass'
  }
 });*/
@@ -46,7 +46,7 @@ server.get('/echo/:name', function (req, res, next) {
 
 // [START index]
 server.get('/', function (req, res) {
-  res.send('Envio de mail con detalle de consumos OSDE');
+  res.send('Envio de mail con detalle de consumos OSDE(App OSDE)');
 });
 // [END index]
 
@@ -115,7 +115,7 @@ function sendMail(req, res, callback){
 	      email: req.params.email,
 	      from: 'CDT <martin.pielvitori@cdt.com.ar>',
 	      subject: 'Detalles de consumo - OSDE(test)',
-	      url: 'http://localhost:8080',
+	      url: 'http://consumos-osde.appspot.com',
 	      socio: req.params.socio,
 	      gform: 'https://docs.google.com/forms/d/1uj1wZI-X9ZyMs4Zoelw9QVS8ACezeu1q6fCIEyLNvHo/formResponse',
 	      gformlink: 'https://docs.google.com/forms/d/1uj1wZI-X9ZyMs4Zoelw9QVS8ACezeu1q6fCIEyLNvHo/viewform'
