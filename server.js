@@ -17,14 +17,14 @@
 var restify = require('restify');
 var nodemailer = require('nodemailer');
 var directTransport = require('nodemailer-direct-transport');
-var transporter = nodemailer.createTransport(directTransport({name:"cdt.com.ar",debug:false}));
-/*var gmailTransport = nodemailer.createTransport('SMTP', {
+//var transporter = nodemailer.createTransport(directTransport({name:"cdt.com.ar",debug:false}));
+var gmailTransport = nodemailer.createTransport('SMTP', {
  service: 'Gmail',
  auth: {
-   user: 'barbucha@gmail.com',
-   pass: 'pass'
+   user: 'martinmock1234@gmail.com',
+   pass: '12martin34'
  }
-});*/
+});
 var emailTemplates = require('email-templates');
 var path = require('path');
 var templatesDir = path.resolve(__dirname, '.', 'templates');
@@ -127,7 +127,7 @@ function sendMail(req, res, callback){
 	        console.log('Error.2 '+err);
 	        callback(null, 'Error.2 ('+err+')');
 	      } else {
-	        transporter.sendMail({
+	        gmailTransport.sendMail({
 	          from: locals.from,
 	          to: locals.email,
 	          subject: locals.subject,
@@ -176,7 +176,7 @@ function sendMailResponse(req, res, callback) {
 	        console.log('Error.5 '+err);
 	        callback(null, 'Error.5 ('+err+')');
 	      } else {
-	        transporter.sendMail({
+	        gmailTransport.sendMail({
 	          from: locals.from,
 	          to: locals.email,
 	          subject: locals.subject,
